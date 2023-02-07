@@ -4,6 +4,7 @@ from enum import Enum
 from git import Repo
 from pydantic import BaseModel
 
+from mass_driver.forge import Forge
 from mass_driver.migration import ForgeFile
 from mass_driver.repo import push
 
@@ -50,6 +51,19 @@ def process_repo(
         draft=config.draft_pr,
     )
     return PRResult(outcome=PROutcome.PR_CREATED, pr_html_url=pr)
+
+
+def review_pr(forge: Forge, pr_urls: list[str]):
+    """Review a list of PRs"""
+    pr_objects = {}
+    for pr_url in pr_urls:
+        try:
+            gh_repo = forge.detect_repo_name(pr_url)
+            pr_id = forge.detect_pr_identifier(pr_url)
+            pr_objects[pr_url] = forge.get_pr(forge_repo=gh_repo, pr_id=pr_id)
+        except Exception as e:
+            print(f"Error during processing of PR '{pr_url}'. Error was: {str(e)}")
+    # TODO Do something with the PR objects, summarize status
 
 
 class PROutcome(str, Enum):

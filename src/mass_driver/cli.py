@@ -107,6 +107,17 @@ def forge_subparser(subparser):
     forges.set_defaults(func=commands.forges_command)
 
 
+def reviewpr_subparser(subparser):
+    """Inject the PR reviewing subparser"""
+    reviewpr = subparser.add_parser(
+        "review-pr",
+        help="Inspect given PRs status",
+    )
+    reviewpr.add_argument("--forge", help="The forge to use to review PRs status")
+    repo_list_group(reviewpr)
+    reviewpr.set_defaults(func=commands.review_pr_command)
+
+
 def subparsers(parser: ArgumentParser) -> ArgumentParser:
     """Add subparsers for driver selection"""
     subparser = parser.add_subparsers(dest="cmd", title="Commands")
@@ -115,6 +126,7 @@ def subparsers(parser: ArgumentParser) -> ArgumentParser:
     runmig_subparser(subparser)
     runforge_subparser(subparser)
     forge_subparser(subparser)
+    reviewpr_subparser(subparser)
     return parser
 
 

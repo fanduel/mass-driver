@@ -125,7 +125,6 @@ def load_forge_toml(forge_config: str) -> ForgeFilePreload:
 def forge_from_config(config: ForgeFilePreload, auth_token: str) -> Forge:
     """Create Forge instance from config file (TOML)"""
     forge_class = get_forge(config.forge)
-    breakpoint()
     return forge_class(auth_token=auth_token)
 
 

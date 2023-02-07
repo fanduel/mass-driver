@@ -27,6 +27,14 @@ class Forge(BaseModel):
         """Send a PR with msg on upstream of repo at repo_path, for given branch"""
         raise NotImplementedError("Forge base class can't get PR, use derived")
 
+    def detect_repo_name(self, remote_url: str) -> str:
+        """Parse a repo's URL to find its unique name/owner"""
+        raise NotImplementedError("Forge base class can't compute details of repo")
+
+    def detect_pr_identifier(self, url: str) -> str:
+        """Parse a PR's URL to find the unique PR reference"""
+        raise NotImplementedError("Forge base class can't compute details of PR")
+
     class Config:
         """Configuration of the Forge class"""
 

@@ -11,8 +11,15 @@ from mass_driver.discovery import (
     get_forge_entrypoint,
 )
 from mass_driver.forge_run import main as forge_main
+from mass_driver.forge_run import review_pr
 from mass_driver.main import main
-from mass_driver.migration import load_forge, load_migration
+from mass_driver.migration import get_forge, load_forge, load_migration
+
+
+def repo_list_fallback(args: Namespace):
+    """Set repo-paths via fallback of repo-filelist if necessary"""
+    if args.repo_filelist:
+        args.repo_path = args.repo_filelist.read().strip().split("\n")
 
 
 def drivers_command(args: Namespace):
@@ -64,8 +71,7 @@ def forges_command(args: Namespace):
 def run_migration_command(args: Namespace):
     """Process the CLI for 'run-migration' subcommand"""
     print("Migration-run mode!")
-    if args.repo_filelist:
-        args.repo_path = args.repo_filelist.read().strip().split("\n")
+    repo_list_fallback(args)
     notatoken = ""  # get_token(args)
     migration_config_str = args.migration_file.read()
     migration = load_migration(migration_config_str)
@@ -81,12 +87,21 @@ def run_migration_command(args: Namespace):
 def run_forge_command(args: Namespace):
     """Process the CLI for 'run-forge' subcommand"""
     print("Forge-run mode!")
-    if args.repo_filelist:
-        args.repo_path = args.repo_filelist.read().strip().split("\n")
+    repo_list_fallback(args)
     token = get_token()
     forge_config_str = args.forge_file.read()
     forge = load_forge(forge_config_str, token)
     return forge_main(forge, args.repo_path)
+
+
+def review_pr_command(args: Namespace):
+    """Review a given list of PRs' statuses"""
+    print("Forge-run mode!")
+    repo_list_fallback(args)
+    token = get_token()
+    forge_class = get_forge(args.forge)
+    forge = forge_class(auth_token=token)
+    return review_pr(forge, args.repo_path)
 
 
 def get_token() -> str:
