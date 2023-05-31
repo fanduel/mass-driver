@@ -17,6 +17,7 @@ from mass_driver.forge_run import main as forge_main
 from mass_driver.forge_run import pause_until_ok
 from mass_driver.migration_run import main as migration_main
 from mass_driver.models.activity import ActivityLoaded, ActivityOutcome
+from mass_driver.review_run import review
 from mass_driver.scan_run import scan_main
 
 
@@ -124,6 +125,15 @@ def scan_command(args: Namespace) -> ActivityOutcome:
     )
     maybe_save_outcome(args, result)
     return result
+
+
+def review_pr_command(args: Namespace):
+    """Review a list of Pull Requests"""
+    print("Pull request review mode!")
+    pr_list = args.pr
+    if args.pr_filelist:
+        pr_list = args.pr_filelist.read().strip().split("\n")
+    review(pr_list)
 
 
 def forge_config_error_exit(e: ValidationError):
