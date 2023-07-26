@@ -6,6 +6,13 @@ The project uses semantic versioning (see [semver](https://semver.org)).
 
 ## [Unreleased]
 
+### Added
+- `PatchDriver` now allows a `logger` field for customized logging
+- Migration run func sets `Patchdriver.logger` name: `driver.<plugin-name>`
+
+### Changed
+- Replaced all `print()` calls to `logging`
+
 
 ### Fixed
 - Error messages for bad config file for Sources no longer insist wrongly about
