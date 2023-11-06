@@ -1,0 +1,29 @@
+schema-version: v2.1
+dd-service: mass-driver
+team: platform-operations
+description: undefined
+tier: p1
+lifecycle: production
+contacts:
+  - type: slack
+    name: Podium Community Platform
+    contact: https://fanduel.slack.com/archives/https://fanduel.slack.com/archives/C047L8AGUKT
+links:
+  - name: mass-driver
+    type: repo
+    provider: github
+    url: https://github.com/fanduel/mass-driver
+  - name: Build Pipeline
+    type: other
+    url: https://buildkite.com/fanduel/mass-driver
+  - name: Deploy Pipeline
+    type: other
+    url: undefined
+integrations:
+  pagerduty:
+    service-url: https://fanduel.pagerduty.com/service-directory/PNYQGLA
+tags:
+  - type:library
+  - domain:it
+  - vertical:cloud-platforms
+  - platform:podium
